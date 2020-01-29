@@ -45,4 +45,10 @@ public class GreetingResource {
         return greetingsInMultipleLangs;
     }
 
+    @GET
+    @Path("/{id}")
+    public String getOne(@PathParam("id") Long id) {
+        return greetingsInMultipleLangs.get(Math.toIntExact(id));
+    }
+
 }
