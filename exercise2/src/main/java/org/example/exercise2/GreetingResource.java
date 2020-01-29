@@ -1,4 +1,4 @@
-package org.example.exercise1;
+package org.example.exercise2;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -46,6 +46,7 @@ public class GreetingResource {
     }
 
     @GET
+    @Produces(MediaType.TEXT_PLAIN)
     @Path("/{id}")
     public String getOne(@PathParam("id") Long id) {
         return greetingsInMultipleLangs.get(Math.toIntExact(id));

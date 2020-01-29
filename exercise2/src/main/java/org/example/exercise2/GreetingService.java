@@ -1,4 +1,4 @@
-package org.example.exercise1;
+package org.example.exercise2;
 
 import javax.enterprise.context.ApplicationScoped;
 
