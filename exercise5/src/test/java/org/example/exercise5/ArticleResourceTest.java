@@ -1,7 +1,6 @@
-package org.example.exercise4;
+package org.example.exercise5;
 
 import io.quarkus.test.junit.QuarkusTest;
-import org.apache.http.Header;
 import org.apache.http.HttpHeaders;
 import org.apache.http.HttpStatus;
 import org.junit.jupiter.api.MethodOrderer;
@@ -9,17 +8,43 @@ import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
 
-import javax.ws.rs.PathParam;
 import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
-import java.awt.*;
 
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.CoreMatchers.is;
 
 @QuarkusTest
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-public class GreetingResourceTest {
+public class ArticleResourceTest {
+
+    @Test
+    @Order(0)
+    public void testAddingAnItem() {
+        Article entity = new Article();
+        entity.likes = 1;
+        entity.title = "TitelLL";
+        entity.subtitle = "UnterTiTel";
+        entity.linktotweet = "LoLaLinkToIt";
+        entity.coverImage = "PictureTis";
+        entity.asciidocsource = "AsciiQuelle";
+        given()
+                .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON)
+                .header(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON)
+                .body(entity)
+                .when()
+                .post("/article")
+                .then()
+                .statusCode(HttpStatus.SC_CREATED)
+                .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON)
+                .body(is(entity));
+
+        given()
+                .when()
+                .get("/article")
+                .then()
+                .body("size()", is(5));
+
+    }
 
     @Test
     @Order(0)
@@ -28,7 +53,7 @@ public class GreetingResourceTest {
                 .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON)
                 .header(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON)
                 .pathParam("id", 1)
-                .when().get("/greeting/{id}")
+                .when().get("/article/{id}")
                 .then()
                 .statusCode(HttpStatus.SC_OK)
                 .body(is("Salut"));
@@ -44,7 +69,7 @@ public class GreetingResourceTest {
                 .body(name)
                 .pathParam("id", 1)
                 .when()
-                .put("/greeting/{id}")
+                .put("/article/{id}")
                 .then()
                 .statusCode(HttpStatus.SC_OK)
                 .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON)
@@ -57,34 +82,11 @@ public class GreetingResourceTest {
         given()
                 .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON)
                 .header(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON)
-                .when().get("/greeting")
+                .when().get("/article")
                 .then()
                 .statusCode(200)
                 .log().body()
                 .body("size()", is(4));
-
-    }
-
-    @Test
-    @Order(3)
-    public void testAddingAnItem() {
-        String name = "Hannes";
-        given()
-                .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON)
-                .header(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON)
-                .body(name)
-                .when()
-                .post("/greeting")
-                .then()
-                .statusCode(HttpStatus.SC_CREATED)
-                .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON)
-                .body(is(name));
-
-        given()
-                .when()
-                .get("/greeting")
-                .then()
-                .body("size()", is(5));
 
     }
 
@@ -96,13 +98,13 @@ public class GreetingResourceTest {
                 .header(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON)
                 .pathParam("id", 3)
                 .when()
-                .delete("/greeting/{id}")
+                .delete("/article/{id}")
                 .then()
                 .statusCode(HttpStatus.SC_NO_CONTENT);
 
         given()
                 .when()
-                .get("/greeting")
+                .get("/article")
                 .then()
                 .body("size()", is(4));
     }

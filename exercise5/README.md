@@ -46,7 +46,7 @@ then go to:
 
 http://localhost:8080/tag
 
-We've pre-seeded the database with some initial entries using the resources/import.sql file.
+We've pre-seeded the database with some initial entries using the resources/importXXX.sql file.
 
 ### 3. Implement a new Entity class called Article
 
@@ -153,7 +153,7 @@ public class TagEntityTest {
 
 ### EXTRA EXTRA CREDIT
 
-Create a many-to-many relationship between Article and Tag. Think of a blog article where you want to have multiple tags, and a tag can be linked to multiple Articles. Below is some code to make it happen - don't forget to amend import.sql with some seed data once you have it all coded.
+Create a many-to-many relationship between Article and Tag. Think of a blog article where you want to have multiple tags, and a tag can be linked to multiple Articles. Below is some code to make it happen - don't forget to amend importXXX.sql with some seed data once you have it all coded.
 
 ``` 
 

@@ -1,18 +1,17 @@
 package org.example.exercise5;
 
 
-import io.quarkus.panache.common.Sort;
-
 import javax.transaction.Transactional;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.util.ArrayList;
 import java.util.List;
 
-@Path("/tag")
+@Path("/article")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
-public class TagResource {
+public class ArticleResource {
 
   @OPTIONS
   public Response opt() {
@@ -20,14 +19,14 @@ public class TagResource {
   }
 
   @GET
-  public List<Tag> getAll() {
-    return Tag.listAll();
+  public List<Article> getAll() {
+    return Article.listAll();
   }
 
   @GET
   @Path("/{id}")
   public Response getOne(@PathParam("id") Long id) {
-    Tag entity = Tag.findById(id);
+    Article entity = Article.findById(id);
     if (entity == null) {
       return Response
         .status(Response.Status.NOT_FOUND)
@@ -41,17 +40,22 @@ public class TagResource {
 
   @POST
   @Transactional
-  public Response create(Tag tag) {
-    tag.persist();
-    return Response.status(Response.Status.CREATED).entity(tag).build();
+  public Response create(Article article) {
+    article.persist();
+    return Response.status(Response.Status.CREATED).entity(article).build();
   }
 
   @PUT
   @Path("/{id}")
   @Transactional
-  public Response update(Tag tag, @PathParam("id") Long id) {
-    Tag entity = Tag.findById(id);
-    entity.name = tag.name;
+  public Response update(Article article, @PathParam("id") Long id) {
+    Article entity = Article.findById(id);
+    entity.asciidocsource = article.asciidocsource;
+    entity.coverImage = article.coverImage;
+    entity.linktotweet = article.linktotweet;
+    entity.subtitle = article.subtitle;
+    entity.title = article.title;
+    entity.likes = article.likes;
     entity.persist();
     return Response.ok(entity).build();
   }
@@ -60,7 +64,7 @@ public class TagResource {
   @Transactional
   @Path("/{id}")
   public Response deleteOne(@PathParam("id") Long id) {
-    Tag entity = Tag.findById(id);
+    Article entity = Article.findById(id);
     if (entity == null) {
       return Response
         .status(Response.Status.NOT_FOUND)
